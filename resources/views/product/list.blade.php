@@ -46,26 +46,35 @@
                         <!-- Shop Side Bar -->
                         <div class="col-md-3">
                             <div class="shop-side-bar">
-
                                 <!-- Categories -->
                                 <h6>Địa chỉ</h6>
-                                <div class="checkbox checkbox-primary">
+                                <div>
                                     <ul>
-                                        <li>
-                                            <input id="cate1" class="styled" type="checkbox">
-                                            <label for="cate1"> Hồ Chí Minh </label>
-                                        </li>
+                                        @foreach ($locations as $location)
+                                            <li>
+                                                <input onclick="findConditions()" id="location_{{ $location->id }}" type="radio" name="location" location="{{$location->slug}}" {{ isset(request()->location) && request()->location == $location->slug ? "checked" : ""}}>
+                                                <label for="location_{{ $location->id }}"> {{ $location->name }} </label>
+                                            </li>
+                                        @endforeach
                                     </ul>
                                 </div>
 
                                 <!-- Categories -->
                                 <h6>Giá tiền</h6>
                                 <!-- PRICE -->
-                                <div class="checkbox checkbox-primary">
+                                <div>
                                     <ul>
                                         <li>
-                                            <input id="brand1" class="styled" type="checkbox">
-                                            <label for="brand1">500.000 VND</label>
+                                            <input id="0-500000" onclick="findConditions()" type="radio" name="price" value="0-500000" {{ isset(request()->price) && request()->price == "0-500000" ? "checked" : ""}}>
+                                            <label for="0-500000">0-500.000 VND</label>
+                                        </li>
+                                        <li>
+                                            <input id="500000-1500000" onclick="findConditions()" type="radio" name="price" value="500000-1500000" {{ isset(request()->price) && request()->price == "500000-1500000" ? "checked" : ""}}>
+                                            <label for="500000-1500000">500.000-1.500.000 VND</label>
+                                        </li>
+                                        <li>
+                                            <input id="1500000-2000000" onclick="findConditions()" type="radio" name="price" value="1500000-2000000" {{ isset(request()->price) && request()->price == "1500000-2000000" ? "checked" : ""}}>
+                                            <label for="1500000-2000000" >1.500.000-2.000.000 VND</label>
                                         </li>
                                     </ul>
                                 </div>
@@ -80,10 +89,10 @@
                                 <ul>
                                     <!-- by Default -->
                                     <li>
-                                        <select class="selectpicker">
-                                            <option>Mặc định</option>
-                                            <option>Giá tiền thấp -> cao</option>
-                                            <option>Giá tiền cao -> thấp </option>
+                                        <select class="selectpicker" id="sort-select" onchange="findConditions()">
+                                            <option value="" selected >Mặc định</option>
+                                            <option value="price-asc" data_url="asc" {{ isset(request()->sort) && request()->sort == "asc" ? "selected" : ""}}>Giá tăng dần</option>
+                                            <option value="price-desc" data_url="desc" {{ isset(request()->sort) && request()->sort == "desc" ? "selected" : ""}}>Giá giảm dần</option>
                                         </select>
                                     </li>
                                 </ul>
@@ -92,16 +101,13 @@
                             <!-- Items -->
                             <div class="item-col-3">
                                 <!-- Product -->
-                                <x-product />
+                                @foreach ($products as $product)
+                                    <x-product :product="$product"/>
+                                @endforeach
 
                                 <!-- pagination -->
                                 <ul class="pagination">
-                                    <li><a href="#" aria-label="Previous"> <i class="fa fa-angle-left"></i> </a>
-                                    </li>
-                                    <li><a class="active" href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#" aria-label="Next"> <i class="fa fa-angle-right"></i> </a> </li>
+                                    {{$products->links()}} 
                                 </ul>
                             </div>
                         </div>
@@ -113,4 +119,23 @@
         <!-- End Content -->
     </div>
     <!-- End Page Wrapper -->
+    <script>
+        function findConditions() {
+            var location = $('input[name="location"]:checked').attr('location');
+            var rangePrice = $("#sort-select option:selected").attr('data_url');
+            var price = $('input[name="price"]:checked').val();
+
+            var url = '/list?';
+            if (location) {
+                url += 'location=' + location + '&';
+            }
+            if (rangePrice) {
+                url += 'sort=' + rangePrice + '&';
+            }
+            if (price) {
+                url += 'price=' + price + '&';
+            }
+            window.location.href = url;
+        }
+    </script>
 @endsection
