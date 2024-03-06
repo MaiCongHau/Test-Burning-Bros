@@ -9,6 +9,8 @@
                 {{ $product->sold_amount }}</span></p>
         <div class="price">{{ number_format($product->price) }} VND</div> <br>
         <div>Địa chỉ: {{ $product->location->name }}</div>
-        <a href="#." class="cart-btn"><i class="icon-basket-loaded"></i></a>
+        <a href="#." class="cart-btn" onclick="addCart(this)" product_id= "{{ $product->id }}"
+            product_name="{{ $product->name }}" product_price="{{ $product->price }}"><i
+                class="icon-basket-loaded"></i></a>
     </article>
 </div>

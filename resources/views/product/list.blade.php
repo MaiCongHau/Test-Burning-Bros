@@ -3,7 +3,6 @@
 @section('content')
     <!-- Page Wrapper -->
     <div id="wrap">
-
         <!-- Header -->
         <header>
             <div class="container">
@@ -11,38 +10,23 @@
                 <!-- Cart Part -->
                 <ul class="nav navbar-right cart-pop">
                     <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                            aria-haspopup="true" aria-expanded="false"><span class="itm-cont">3</span> <i
+                            aria-haspopup="true" aria-expanded="false"><span class="itm-cont">{{ Cart::count() }}</span> <i
                                 class="flaticon-shopping-bag"></i> <strong>My Cart</strong> <br>
-                            <span>3 item(s) - $500.00</span></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <div class="media-left"> <a href="#." class="thumb"> <img
-                                            src="images/item-img-1-1.jpg" class="img-responsive" alt=""> </a> </div>
-                                <div class="media-body"> <a href="#." class="tittle">Funda Para Ebook 7" 128GB full
-                                        HD</a> <span>250 x 1</span> </div>
-                            </li>
-                            <li>
-                                <div class="media-left"> <a href="#." class="thumb"> <img
-                                            src="images/item-img-1-2.jpg" class="img-responsive" alt=""> </a> </div>
-                                <div class="media-body"> <a href="#." class="tittle">Funda Para Ebook 7" full HD</a>
-                                    <span>250 x 1</span>
-                                </div>
-                            </li>
-                            <li class="btn-cart"> <a href="#." class="btn-round">View Cart</a> </li>
+                           </a>
+                        <ul class="dropdown-menu cartItem">
+                            @include('includes.cart.item')
+                            <li class="btn-cart"> <a href="{{route('product.showAllItem')}}" class="btn-round">View Cart</a> </li>
                         </ul>
                     </li>
                 </ul>
             </div>
         </header>
-
         <!-- Content -->
         <div id="content">
-
             <!-- Products -->
             <section class="padding-top-40 padding-bottom-60">
                 <div class="container">
                     <div class="row">
-
                         <!-- Shop Side Bar -->
                         <div class="col-md-3">
                             <div class="shop-side-bar">
@@ -58,7 +42,6 @@
                                         @endforeach
                                     </ul>
                                 </div>
-
                                 <!-- Categories -->
                                 <h6>Giá tiền</h6>
                                 <!-- PRICE -->
@@ -80,10 +63,8 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- Products -->
                         <div class="col-md-9">
-
                             <!-- Short List -->
                             <div class="short-lst">
                                 <ul>
@@ -97,7 +78,6 @@
                                     </li>
                                 </ul>
                             </div>
-
                             <!-- Items -->
                             <div class="item-col-3">
                                 <!-- Product -->
@@ -114,12 +94,13 @@
                     </div>
                 </div>
             </section>
-
         </div>
         <!-- End Content -->
     </div>
     <!-- End Page Wrapper -->
     <script>
+        var urlCart = @json($urlCart);
+
         function findConditions() {
             var location = $('input[name="location"]:checked').attr('location');
             var rangePrice = $("#sort-select option:selected").attr('data_url');
@@ -136,6 +117,38 @@
                 url += 'price=' + price + '&';
             }
             window.location.href = url;
+        }
+
+        function addCart(self)
+        {
+            var product_id = $(self).attr('product_id');
+            var product_name = $(self).attr('product_name');
+            var product_price = $(self).attr('product_price');
+
+            $.ajax({
+                url: '/cart/add',
+                type: 'GET',
+                data: {
+                    product_id: product_id,
+                    product_name: product_name,
+                    product_price: product_price
+                },
+                success: function (response) {
+                    alert('Thêm sản phẩm vào giỏ hàng thành công');
+                    display(response);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Xảy ra lỗi, vui lòng thử lại sau');
+                }
+            });
+        }
+
+        function display(response)
+        {   
+            let cartCount = response.count;
+            $('.itm-cont').text(cartCount);
+            let html = response.view + '<li class="btn-cart"> <a href="'+urlCart+'" class="btn-round">View Cart</a> </li>';
+            $('.cartItem').html(html)
         }
     </script>
 @endsection
