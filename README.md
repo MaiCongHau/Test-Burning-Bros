@@ -1,7 +1,7 @@
 ## Installation 
 Clone the repository
 
-    Git clone https://github.com/MaiCongHau/Test-Burning-Bros.git
+    git clone https://github.com/MaiCongHau/Test-Burning-Bros.git
 
 Switch to the repo folder
 
@@ -21,12 +21,14 @@ Generate a new application key
 
 Clear cache 
 
-php artisan optimize:clear
-php artisan cache:clear
+    php artisan optimize:clear
+    php artisan cache:clear
 
 ## Database seeding
 Run the database seeder and you're done
 
-php artisan db:seed
+    php artisan db:seed
+
 Run the database migrations 
-php artisan migrate:refresh
+
+    php artisan migrate:refresh
