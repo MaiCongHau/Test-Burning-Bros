@@ -1,6 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
+    @if (\Session::has('success'))
+        <div class="alert alert-success">
+            <ul>
+                <li>{!! \Session::get('success') !!}</li>
+            </ul>
+        </div>
+    @endif
     <!-- Page Wrapper -->
     <div id="wrap">
         <!-- Header -->

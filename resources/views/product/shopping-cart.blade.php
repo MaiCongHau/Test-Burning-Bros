@@ -52,6 +52,11 @@
                         <h5>Grand total: <span class="subTotalCart">{{ Cart::subtotal() }}</span></h5>
                     </div>
                 </div>
+                <!-- Button -->
+                <form action="{{route('product.storeCartInDB')}}" method="POST">
+                    @csrf
+                    <div class="pro-btn"> <button href="#." class="btn-round" type="submit">Payment</button> </div>
+                </form>
             </div>
         </section>
     </div>
