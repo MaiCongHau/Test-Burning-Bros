@@ -100,7 +100,8 @@
     <script>
         var urlCart = @json($urlCart);
 
-        function findConditions() {
+        function findConditions() 
+        {
             var location = $('input[name="location"]:checked').attr('location');
             var rangePrice = $("#sort-select option:selected").attr('data_url');
             var price = $('input[name="price"]:checked').val();
