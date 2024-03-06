@@ -82,4 +82,13 @@ class ProductController extends Controller
     {
        return view('product.shopping-cart');
     }
+
+    public function storeCartInDB(Request $request)
+    {   
+        $user = md5(time());
+        Cart::instance('cart')->store($user);
+        $request->session()->flush();
+
+        return redirect()->route('product.list')->with('success', 'Successfully purchased products!');
+    }
 }
