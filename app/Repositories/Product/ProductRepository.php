@@ -34,6 +34,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             });
         }
 
-        return  $model->paginate(2);
+        return  $model->paginate(3);
     }
 }

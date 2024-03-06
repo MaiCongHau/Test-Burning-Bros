@@ -84,10 +84,9 @@
                                 @foreach ($products as $product)
                                     <x-product :product="$product"/>
                                 @endforeach
-
                                 <!-- pagination -->
                                 <ul class="pagination">
-                                    {{$products->links()}} 
+                                    {{$products->appends(request()->query())->links()}}
                                 </ul>
                             </div>
                         </div>
